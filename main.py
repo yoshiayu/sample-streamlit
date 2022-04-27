@@ -41,7 +41,6 @@ if upload_file is not None:
                                                       rect['top'] + rect['height'])], fill=None, outline='green', width=5)
     st.image(img, caption='Uploaded Image.', use_column_width=True)
 
-return_face_attributes = ['age', 'gender', 'emotion']
 
 # st.write('データフレーム')
 # st.write(
