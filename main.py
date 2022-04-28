@@ -7,6 +7,7 @@ from PIL import ImageDraw, ImageFont
 
 st.title('顔認識アプリ')
 
+
 SUBSCRIPTION_KEY = '7382d82ba05b473b9ae5800910b8fdb2'
 
 assert SUBSCRIPTION_KEY
@@ -36,10 +37,26 @@ if upload_file is not None:
     results = res.json()
     for result in results:
         rect = result['faceRectangle']
+        age = result['faceAttributes']['age']
+        gender = result['faceAttributes']['gender']
         draw = ImageDraw.Draw(img)
+        font_size = 50
+        font_name = "C:\Windows\Fonts\meiryo.ttc"
+        src = r"pillow_test_src.jpg"
+        dest = r"pillow_test_dest.jpg"
+
         draw.rectangle([(rect['left'], rect['top']), (rect['left']+rect['width'],
                                                       rect['top'] + rect['height'])], fill=None, outline='green', width=5)
+        draw_x = rect['left']-30
+        draw_y = rect['top']-30
+
+        text = result['faceAttributes']['gender'] + \
+            '/'+str(result['faceAttributes']['age'])
+        draw.text((draw_x, draw_y), text, fill='red')
     st.image(img, caption='Uploaded Image.', use_column_width=True)
+
+
+print(json.dumps)
 
 
 # st.write('データフレーム')
