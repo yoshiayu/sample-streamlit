@@ -13,6 +13,36 @@ SUBSCRIPTION_KEY = '7382d82ba05b473b9ae5800910b8fdb2'
 assert SUBSCRIPTION_KEY
 face_api_url = 'https://yoshiayu.cognitiveservices.azure.com/face/v1.0/detect'
 
+
+def get_draw_text(faceDictionary):
+    rect = faceDictionary.face_rectangle
+    age = int(faceDictionary.face_attributes.age)
+    gender = faceDictionary.face_attributes.gender
+    text = f'{gender} {age}'
+
+    # 枠に合わせてフォントサイズを調整
+    font_size = max(50, int(rect.width / len(text)))
+    font = ImageFont.truetype(r'C:\windows\fonts\meiryo.ttc', font_size)
+
+    return (text, font)
+
+
+def get_text_rectangle(faceDictionary, text, font):
+    rect = faceDictionary.face_rectangle
+
+    text_width, text_height = font.getsize(text)
+    left = rect.left + rect.width / 2 - text_width / 2
+    top = rect.top - text_height - 1
+
+    return (left, top)
+
+
+def draw_text(faceDictionary):
+    text, font = get_draw_text(faceDictionary)
+    text_rect = get_text_rectangle(faceDictionary, text, font)
+    draw.text(text_rect, text, align='center', font=font, fill='green')
+
+
 upload_file = st.file_uploader("Choose an image...", type="jpg")
 if upload_file is not None:
     img = Image.open(upload_file)
@@ -39,9 +69,9 @@ if upload_file is not None:
         rect = result['faceRectangle']
         age = result['faceAttributes']['age']
         gender = result['faceAttributes']['gender']
+        text = f'{gender} {age}'
         draw = ImageDraw.Draw(img)
-        font_size = 50
-        font_name = "C:\Windows\Fonts\meiryo.ttc"
+
         src = r"pillow_test_src.jpg"
         dest = r"pillow_test_dest.jpg"
 
