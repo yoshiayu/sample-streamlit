@@ -1,5 +1,6 @@
 import streamlit as st
 import io
+import os
 import requests
 import json
 from PIL import Image
@@ -7,8 +8,7 @@ from PIL import ImageDraw, ImageFont
 
 st.title('顔認識アプリ')
 
-
-SUBSCRIPTION_KEY = '7382d82ba05b473b9ae5800910b8fdb2'
+SUBSCRIPTION_KEY = st.secrets["SUBSCRIPTION_KEY"]
 
 assert SUBSCRIPTION_KEY
 face_api_url = 'https://yoshiayu.cognitiveservices.azure.com/face/v1.0/detect'
